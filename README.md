@@ -9,7 +9,7 @@
 Note: a tic denotes that the feature is already implemented
 
 - [ ] PVP or PVE choice.
-- [ ]Three difficulty levels:
+- [ ] Three difficulty levels:
     1. [ ] Easy
     1. [ ] Normal
     1. [ ] Hard
