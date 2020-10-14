@@ -1,13 +1,24 @@
 # Used for testing for now
+require_relative 'game_master'
 
-require_relative 'grid'
-require_relative 'player'
+gm = GM.new
 
-#grid = Grid.new
-player = Player.new "Mario", "M"
+go_on = true
+while go_on
+  gm.welcome
+  mode_chosen = false
 
-player.acquire_tile "1"
-p player.name
-p player.owned_tiles
-p player.symbol
+  until mode_chosen
+    mode_chosen = gm.choose_mode
+  end
 
+  gm.get_players gm.pvp
+
+  game = true
+  while game
+    gm.display_Grid
+    gm.give_turn
+  end
+
+  go_on = false
+end

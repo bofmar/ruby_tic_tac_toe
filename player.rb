@@ -9,7 +9,7 @@ class Player
     if symbol.is_number?
       @symbol = 'X'
     elsif symbol.length == 1
-      @symbol = symbol
+      @symbol = symbol.upcase
     else
       @symbol = 'X'
     end

@@ -25,8 +25,4 @@ class Grid
     def reset
         @current_grid = @@initial_grid.clone
     end
-
-    def testing
-        #
-    end
 end
