@@ -22,6 +22,10 @@ class Grid
         @current_grid.each { |out_el| out_el.map! { |el| el == old_arr_el ? new_ar_el : el }}
     end
 
+    def get_grid
+        @current_grid
+    end
+
     def reset
         @current_grid = @@initial_grid.clone
     end

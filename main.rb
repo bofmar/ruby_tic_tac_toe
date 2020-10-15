@@ -5,6 +5,7 @@ gm = GM.new
 
 go_on = true
 while go_on
+  system "clear"
   gm.welcome
   mode_chosen = false
 
@@ -17,8 +18,8 @@ while go_on
   game = true
   while game
     gm.display_Grid
-    gm.give_turn
+    game = gm.give_turn
   end
 
-  go_on = false
+  go_on = gm.play_again
 end
