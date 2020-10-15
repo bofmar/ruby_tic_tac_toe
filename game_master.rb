@@ -38,8 +38,28 @@ class GM
       @pvp = false
       gets
       system "clear"
+      puts "Choose an oponent: "
+      puts "1. WOPR - Easy"
+      puts "2. T-800 - Normal"
+      puts "3. HAL-9000 - Hard"
+      dif = gets.chomp
+      case dif
+      when "1"
+        puts = "You meakly chose to face WOPR"
+        dif = "EASY"
+      when "2"
+        puts "You chose to face T-800"
+        dif = "NORMAL"
+      when "3"
+        puts "You foolishly chose to face HAL-9000"
+        dif = "HARD"
+      else
+        puts "Your input was invalid. To atone for your sin, you will now face HAL-9000"
+        dif = "HARD"
+      end
+      @pvp = false
+      # initialize the enemy
       mode_chosen = true
-      # Add dificulty choice
     end
 
     return mode_chosen
