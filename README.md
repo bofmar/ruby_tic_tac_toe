@@ -10,9 +10,9 @@ Note: a tic denotes that the feature is already implemented
 
 - [x] PVP or PVE choice.
 - [ ] Three difficulty levels:
-    1. [x] Easy (WOPR)
-    1. [x] Normal (T-800)
-    1. [ ] Hard (HAL-9000)
+    1. [x] Easy (WOPR) - Picks moves at random
+    1. [x] Normal (T-800) - Picks moves at random, unless it detects that it can win or block the player from winning
+    1. [ ] Hard (HAL-9000) - Uses [minimax](https://en.wikipedia.org/wiki/Minimax) algorithm to choose its' moves
 - [x] Human players can choose their name and their mark.
 - [x] Players are prompted to keep playing after game over.
 
