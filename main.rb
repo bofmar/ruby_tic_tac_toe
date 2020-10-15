@@ -21,5 +21,6 @@ while go_on
     game = gm.give_turn
   end
 
+  gm.reset
   go_on = gm.play_again
 end

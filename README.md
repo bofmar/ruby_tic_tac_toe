@@ -8,13 +8,13 @@
 
 Note: a tic denotes that the feature is already implemented
 
-- [ ] PVP or PVE choice.
+- [x] PVP or PVE choice.
 - [ ] Three difficulty levels:
-    1. [ ] Easy (WOPR)
-    1. [ ] Normal (T-800)
+    1. [x] Easy (WOPR)
+    1. [x] Normal (T-800)
     1. [ ] Hard (HAL-9000)
 - [x] Human players can choose their name and their mark.
-- [ ] Players are prompted to keep playing after game over.
+- [x] Players are prompted to keep playing after game over.
 
 ## Demo
 

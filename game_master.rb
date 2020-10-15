@@ -1,13 +1,13 @@
 require_relative 'grid'
 require_relative 'player'
 require_relative 'human'
+require_relative 'ai'
 
 class GM
 
   attr_reader :pvp
 
   def initialize
-    @turn_count = 0
     @p1_turn = true
     @grid = Grid.new
     @local_grid = ["1","2","3","4","5","6","7","8","9"]
@@ -58,11 +58,23 @@ class GM
         dif = "HARD"
       end
       @pvp = false
-      # initialize the enemy
+      init_ai dif
       mode_chosen = true
     end
-
     return mode_chosen
+  end
+
+  def init_ai dif
+    if dif == "EASY"
+      @p2 = COM.new "WOPR", "W"
+      @p2.dif_lvl = dif
+    elsif dif == "NORMAL"
+      @p2 = COM.new "T-800", "T"
+      @p2.dif_lvl = dif
+    else
+      @p2 = COM.new "HAL-9000", "H"
+      @p2.dif_lvl = dif
+    end
   end
 
   def get_players pvp
@@ -74,9 +86,13 @@ class GM
       gets
       system "clear"
     else
-      #PVE STUFF
-      # @p1 = human
-      # @p2 = ai
+      @p1 = Human.new get_name("Player 1"), get_symbol
+      gets
+      system "clear"
+      @p2.greeting @p1.name
+      @p2.grid_copy = @grid.get_grid
+      gets
+      system "clear"
     end
   end
 
@@ -109,9 +125,50 @@ class GM
           go_on = move_valid?(@p2)
         end
         @turn_count +=1
-        someone_won?(@grid.get_grid)
-        no_moves_left?
+        if someone_won?(@grid.get_grid)
+          handle_victory
+          return false
+        elsif no_moves_left?
+          return false
+        else
+          @p1_turn = true
+          return true
+        end
+      end
+    else
+      if @p1_turn
+        puts "It's #{@p1.name}'s turn!"
+        go_on = true
+        while go_on
+          go_on = move_valid?(@p1)
+        end
+        @turn_count +=1
+        @p2.grid_copy = @grid.get_grid
+        if someone_won?(@grid.get_grid)
+          handle_victory
+          return false
+        elsif no_moves_left?
+          return false
+        else
+          @p1_turn = false
+          return true
+        end
+      else
+        move = @p2.choose_move(@p1.symbol)
+        puts "#{@p2.name} takes #{move}"
+        @grid.update_current_grid move.to_s, @p2.symbol
+        @local_grid.map! { |el| el == move.to_s ? @p2.symbol : el }
+        @p2.grid_copy = @grid.get_grid
+      end
+      @turn_count += 1
+      if someone_won?(@grid.get_grid)
+        handle_victory
+        return false
+      elsif no_moves_left?
+        return false
+      else
         @p1_turn = true
+        return true
       end
     end
   end
@@ -165,10 +222,21 @@ class GM
         system "clear"
         puts "#{@p2.name} has won the game!"
       end
+    else
+      if @p1_turn
+        system "clear"
+        puts "#{@p1.name} has won the game!"
+        @p2.lament @p1.name
+      else
+        system "clear"
+        puts "#{@p2.name} has won the game!"
+        @p2.gloat @p1.name
+      end
     end
   end
 
   def no_moves_left?
+    puts @turn_count
     if @turn_count == 10
       puts "The game ended in a tie."
       return true
@@ -178,6 +246,10 @@ class GM
   end
 
   def reset
+    @p1_turn = true
+    @grid.reset
+    @local_grid = ["1","2","3","4","5","6","7","8","9"]
+    @turn_count = 1
   end
 
   def play_again
@@ -187,6 +259,7 @@ class GM
     if choice.upcase == "Y" || choice.upcase == "YES"
       system 'clear'
       puts "Thanks for playing!"
+      gets
       return true
     else
       return false

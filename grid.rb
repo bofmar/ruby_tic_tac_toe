@@ -1,8 +1,7 @@
 class Grid
-    @@initial_grid = [["1","2","3"],["4","5","6"],["7","8","9"]]
 
     def initialize
-        @current_grid = @@initial_grid.clone
+        @current_grid = [["1","2","3"],["4","5","6"],["7","8","9"]]
     end
 
     def draw_self
@@ -27,6 +26,6 @@ class Grid
     end
 
     def reset
-        @current_grid = @@initial_grid.clone
+        @current_grid = [["1","2","3"],["4","5","6"],["7","8","9"]]
     end
 end
