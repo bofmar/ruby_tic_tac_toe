@@ -36,6 +36,7 @@ class COM < Player
   end
 
   def choose_move op_sym
+    @op_sym = op_sym
     if dif_lvl == "EASY"
       return random_move
     elsif dif_lvl == "NORMAL"
@@ -56,6 +57,12 @@ class COM < Player
       #otherwise go to a random spot
       return random_move
     else
+      scores = [3,5,2,9,12,5,23,23]
+      n = scores.length
+      height = log2(n)
+      result = minimax(0,0, true, scores, height)
+
+      puts "The optimal value is: #{result}"
     end
   end
 
@@ -167,4 +174,105 @@ class COM < Player
 
     return 100
   end
+
+  def minimax depth, isMax
+    score = evaluate_board
+
+    if score == 10 || score == -10
+      return score
+    end
+
+    unless is_moves_left
+      return 0
+    end
+
+    if is_max
+
+      best = -1000
+
+      for i in 0..2
+        for j in 0..2
+          if @grid_copy[i][j] != @symbol && @grid_copy[i][j] != @op_sym
+            placeholder = @grid_copy[i][j]
+            @grid_copy[i][j] = @op_sym
+
+            best = [best,minimax(depth + 1, !is_max)].max
+
+            @grid_copy[i][j] = placeholder
+          end
+        end
+      end
+      return best
+    else
+      
+      best = 1000
+      for i in 0..2
+        for j in 0..2
+          if @grid_copy[i][j] != @symbol && @grid_copy[i][j] != @op_sym
+            placeholder = @grid_copy[i][j]
+            @grid_copy[i][j] = @op_sym
+
+            best = [best,minimax(depth + 1, !is_max)].min
+
+            @grid_copy[i][j] = placeholder
+          end
+        end
+      end
+      return best
+    end
+  end
+
+  def find_best_move
+  end
+
+  def is_moves_left?
+    for i in 0..2
+      for j in 0..2
+        if @grid_copy[i][j] != @symbol && @grid_copy != @op_sym
+          return true
+        end
+    end
+  end
+
+  def evaluate_board
+    #check rows
+    for i in 0..2
+      if @grid_copy[i][0] == @grid_copy[i][1] && @grid_copy[i][0] == @grid_copy[i][2]
+        if @grid_copy[i][0] == @symbol
+          return +10
+        elsif @grid_copy[i][0] == @op_sym
+          return -10
+        end
+      end
+    end
+    # check columns
+    for i in 0..2
+      if @grid_copy[0][i] == @grid_copy[1][i] && @grid_copy[0][i] == @grid_copy[2][i]
+        if @grid_copy[0][i] == @symbol
+          return +10
+        elsif @grid_copy[0][i] == @op_sym
+          return -10
+        end
+      end
+    end
+
+    #check diagonals
+    if @grid_copy[0][0] == @grid_copy[1][1] && @grid_copy[1][1] == @grid_copy[2][2]
+      if @grid_copy[0][0] == @symbol
+        return 10
+      elsif @grid_copy[0][0] == @op_sym
+        return - 10
+      end
+    end
+
+    if @grid_copy[0][2] == @grid_copy[1][1] && @grid_copy[1][1] == @grid[2][0]
+      if @grid_copy[0][2] == @symbol
+        return 10
+      elsif @grid_copy[0][2] == @op_sym
+        return - 10
+    end
+
+    return 0 # this hapens if no-one won
+  end
+
 end
